@@ -5,7 +5,7 @@ import utilStyles from '../styles/utils.module.css';
 import Link from 'next/link';
 
 const name = 'Tran Nam';
-export const siteTitle = 'Next.js Sample Website';
+export const siteTitle = 'Next.js Blog website';
 
 export default function Layout({ children, home }) {
   return (
