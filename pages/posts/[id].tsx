@@ -6,7 +6,13 @@ import {
 	getAllPostIds,
 	getPostData,
 } from '../../lib/posts';
-
+interface Props {
+	postData: {
+		title: string;
+		date: string;
+		contentHtml: string;
+	};
+}
 export async function getStaticProps({ params }) {
 	const postData = await getPostData(params.id);
 	return {
@@ -23,19 +29,25 @@ export async function getStaticPaths() {
 		fallback: false,
 	};
 }
-export default function Post({ postData }) {
+export default function Post({ postData }:Props) {
 	return (
-	  <Layout>
-		<Head>
-		  <title>{postData.title}</title>
-		</Head>
-		<article>
-		  <h1 className={utilStyles.headingXl}>{postData.title}</h1>
-		  <div className={utilStyles.lightText}>
-			<Date dateString={postData.date} />
-		  </div>
-		  <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
-		</article>
-	  </Layout>
+		<Layout>
+			<Head>
+				<title>{postData.title}</title>
+			</Head>
+			<article>
+				<h1 className={utilStyles.headingXl}>
+					{postData.title}
+				</h1>
+				<div className={utilStyles.lightText}>
+					<Date dateString={postData.date} />
+				</div>
+				<div
+					dangerouslySetInnerHTML={{
+						__html: postData.contentHtml,
+					}}
+				/>
+			</article>
+		</Layout>
 	);
-  }
+}

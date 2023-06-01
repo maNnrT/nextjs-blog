@@ -22,7 +22,10 @@ export function getSortedPostsData() {
 		// Combine the data with the id
 		return {
 			id,
-			...matterResult.data,
+			...(matterResult.data as {
+				date: string;
+				title: string;
+			}),
 		};
 	});
 	// Sort posts by date
@@ -59,22 +62,22 @@ export function getAllPostIds() {
 	});
 }
 export async function getPostData(id) {
-  const fullPath = path.join(postsDirectory, `${id}.md`);
-  const fileContents = fs.readFileSync(fullPath, 'utf8');
+	const fullPath = path.join(postsDirectory, `${id}.md`);
+	const fileContents = fs.readFileSync(fullPath, 'utf8');
 
-  // Use gray-matter to parse the post metadata section
-  const matterResult = matter(fileContents);
+	// Use gray-matter to parse the post metadata section
+	const matterResult = matter(fileContents);
 
-  // Use remark to convert markdown into HTML string
-  const processedContent = await remark()
-    .use(html)
-    .process(matterResult.content);
-  const contentHtml = processedContent.toString();
+	// Use remark to convert markdown into HTML string
+	const processedContent = await remark()
+		.use(html)
+		.process(matterResult.content);
+	const contentHtml = processedContent.toString();
 
-  // Combine the data with the id and contentHtml
-  return {
-    id,
-    contentHtml,
-    ...matterResult.data,
-  };
+	// Combine the data with the id and contentHtml
+	return {
+		id,
+		contentHtml,
+		...(matterResult.data as { date: string; title: string }),
+	};
 }
